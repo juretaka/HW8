@@ -6,8 +6,10 @@
  * 5-27-14
  */
 
+public class QuantityTester {
 
-public class Quantity {
-
+  public void setUp()
+  {
+  }
 
 }
