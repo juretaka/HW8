@@ -21,18 +21,18 @@ public class ASTTester extends junit.framework.TestCase
   Map<String, Quantity> env;
   Quantity threeMeters;
   Quantity nineMeters;
+  private List<String> empty;
 
   /** Initializes the map database and two quantities */
   protected void setUp()
   {
+    empty = Collections.<String>emptyList();
     env = QuantityDB.getDB();
-    threeMeters = new Quantity(3, Arrays.asList("meters"),
-        Collections.<String>emptyList());
-    nineMeters = new Quantity(9, Arrays.asList("meters"),
-        Collections.<String>emptyList());
+    threeMeters = new Quantity(3, Arrays.asList("meters"), empty);
+    nineMeters = new Quantity(9, Arrays.asList("meters"), empty);
   }
 
-  /*public void testProductOld()
+  public void testProductOld()
   {
     ast = new Product(new Value(new Quantity(3)), new Value(new Quantity(5)));
 
@@ -91,7 +91,7 @@ public class ASTTester extends junit.framework.TestCase
   public void testNormalize()
   {
     Normalize km = new Normalize(new Value(new Quantity(0.62137, 
-            Arrays.asList("mi"), Collections.<String>emptyList())));
+            Arrays.asList("mi"), empty)));
 
     assertEquals("Testing Normalize", "0.62137 mi", km.eval(env).toString());
   }
@@ -100,7 +100,7 @@ public class ASTTester extends junit.framework.TestCase
   public void testDefine()
   {
     Define smoot = new Define("smoot", new Value(new Quantity(67, 
-            Arrays.asList("in"), Collections.<String>emptyList())));
+            Arrays.asList("in"), empty)));
 
     assertEquals("Testing Define", "67.0 in", smoot.eval(env).toString());
   }
