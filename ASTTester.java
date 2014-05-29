@@ -28,8 +28,8 @@ public class ASTTester extends junit.framework.TestCase
   {
     empty = Collections.<String>emptyList();
     env = QuantityDB.getDB();
-    threeMeters = new Quantity(3, Arrays.asList("meters"), empty);
-    nineMeters = new Quantity(9, Arrays.asList("meters"), empty);
+    threeMeters = new Quantity(3, Arrays.asList("meter"), empty);
+    nineMeters = new Quantity(9, Arrays.asList("meter"), empty);
   }
 
   public void testProductOld()
@@ -44,7 +44,7 @@ public class ASTTester extends junit.framework.TestCase
   {
     ast = new Product(new Value(threeMeters), new Value(nineMeters));
 
-    assertEquals("Testing Product", "27.0 meters^2", ast.eval(env).toString());
+    assertEquals("Testing Product", "27.0 meter^2", ast.eval(env).toString());
   }
 
   /** Tests Quotient */
@@ -60,7 +60,7 @@ public class ASTTester extends junit.framework.TestCase
   {
     ast = new Sum(new Value(threeMeters), new Value(nineMeters));
 
-    assertEquals("Testing Sum", "12.0 meters", ast.eval(env).toString());
+    assertEquals("Testing Sum", "12.0 meter", ast.eval(env).toString());
   }
 
   /** Tests Difference */
@@ -68,7 +68,7 @@ public class ASTTester extends junit.framework.TestCase
   {
     ast = new Difference(new Value(nineMeters), new Value(threeMeters));
 
-    assertEquals("Testing Difference", "6.0 meters", ast.eval(env).toString());
+    assertEquals("Testing Difference", "6.0 meter", ast.eval(env).toString());
   }
 
   /** Tests Power */
@@ -76,7 +76,7 @@ public class ASTTester extends junit.framework.TestCase
   {
     ast = new Power(new Value(threeMeters), 3);
 
-    assertEquals("Testing Power", "27.0 meters^3", ast.eval(env).toString());
+    assertEquals("Testing Power", "27.0 meter^3", ast.eval(env).toString());
   }
 
   /** Tests Negation */
@@ -84,7 +84,7 @@ public class ASTTester extends junit.framework.TestCase
   {
     ast = new Negation(new Value(threeMeters));
 
-    assertEquals("Testing Negation", "-3.0 meters", ast.eval(env).toString());
+    assertEquals("Testing Negation", "-3.0 meter", ast.eval(env).toString());
   }
 
   /** Tests Normalize */
@@ -110,7 +110,7 @@ public class ASTTester extends junit.framework.TestCase
   {
     Value val = new Value(nineMeters);
 
-    assertEquals("Testing Value", "9.0 meters", val.eval(env).toString());
+    assertEquals("Testing Value", "9.0 meter", val.eval(env).toString());
   }
 }
 
