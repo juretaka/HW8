@@ -36,7 +36,11 @@ public class Quantity {
     throws IllegalArgumentException
   {
     if(numUnits == null || denomUnits == null)
+    {
       throw new IllegalArgumentException();
+    }
+
+    this.value = value;
     unitMap = new HashMap<String, Integer>();
     int i = 0;
     String tmpUnit;
@@ -70,7 +74,24 @@ public class Quantity {
       }
       i++;
     }
-    this.value = value;
+
+    // removes power of 0 exponents
+    Iterator<String> iterKey = unitMap.keySet().iterator();
+    ArrayList<String> toRemove = new ArrayList<String>();
+    String key;
+
+    while( iterKey.hasNext() )
+    {
+      key = iterKey.next();
+      if( unitMap.get(key) == 0 )
+      {
+        toRemove.add(key);
+      }
+    }
+    for( int j = 0; j < toRemove.size(); j++ )
+    {
+      unitMap.remove( toRemove.get(j) );
+    }
   }
 
   // multiplies two Quantity's together
@@ -80,13 +101,8 @@ public class Quantity {
     {
       throw new IllegalArgumentException();
     }
-    Quantity toReturn = new Quantity();
     double newVal = this.value * multip.value;
     
-    //Iterator<Map.Entry<String, Integer>> iter = unitMap.entrySet().iterator();
-    //Iterator<Map.Entry<String, Integer>> iterOther = 
-    //                                     multip.unitMap.entrySet().iterator();
-
     Iterator<String> iterKey1 = unitMap.keySet().iterator();
     Iterator<String> iterKey2 = multip.unitMap.keySet().iterator();
 
@@ -95,52 +111,81 @@ public class Quantity {
     // stores the units for the denominator
     List<String> denomUnits = new ArrayList<String>();
 
-    String key;
-    Integer val;
-    while( iterKey1.hasNext() )
-    {
-      key = iterKey1.next();
-      val = unitMap.get(key);
-      if( val < 0 )
-      {
-        denomUnits
-      }
-    }
-
-    while(iterKey1.hasNext())
-    {
-      System.out.println("ITERKEY1: " + iterKey1.next());
-      
-    }
-
-
-    //while(iter.hasNext())
-    {
-      //System.out.println("ITER: " + iter.next());
-    }
-
-
-    System.out.println("ENTRYSET: " + unitMap.entrySet());
-    System.out.println("KEYSET: " + unitMap.keySet());
-    System.out.println("VALUES: " + unitMap.values());
-
-    return null;
+    this.mulDivHelper( iterKey1, numUnits, denomUnits, this );
+    this.mulDivHelper( iterKey2, numUnits, denomUnits, multip );
+    
+    return new Quantity( newVal, numUnits, denomUnits );
   }
 
+  private void mulDivHelper( Iterator<String> iter, List<String> num, 
+      List<String> denom, Quantity quant )
+  {
+    String key;
+    Integer val;
+    while( iter.hasNext() )
+    {
+      key = iter.next();
+      val = quant.unitMap.get(key);
+      while( val < 0 )
+      {
+        denom.add( key );
+        val++;
+      }
+      while( val > 0 )
+      {
+        num.add( key );
+        val--;
+      }
+    }
+  }
   // this is the dividend
   public Quantity div( Quantity divis ) throws IllegalArgumentException
   {
-    if( divis == null )
+    if( divis == null || divis.value == 0)
     {
       throw new IllegalArgumentException();
     }
-    return null;
+    double newVal = this.value / divis.value;
+    
+    Iterator<String> iterKey1 = unitMap.keySet().iterator();
+    Iterator<String> iterKey2 = divis.unitMap.keySet().iterator();
+
+    // stores the units for the numerator
+    List<String> numUnits = new ArrayList<String>();
+    // stores the units for the denominator
+    List<String> denomUnits = new ArrayList<String>();
+
+    this.mulDivHelper( iterKey1, numUnits, denomUnits, this );
+    this.mulDivHelper( iterKey2, denomUnits, numUnits, divis );
+
+    return new Quantity( newVal, numUnits, denomUnits );
   }
 
   // returns this to the power of the passed in exponenet
   public Quantity pow( int exp )
   {
-    return null;
+    double newVal = Math.pow( this.value, exp );
+    
+    Iterator<String> iter = unitMap.keySet().iterator();
+    ArrayList<String> toRaise = new ArrayList<String>();
+    Map<String, Integer> newMap = new HashMap<String, Integer>();
+    String key;
+    double val;
+    while( iter.hasNext() )
+    {
+      key = iter.next();
+      toRaise.add(key);
+    }
+    for( int i = 0; i < toRaise.size(); i++ )
+    {
+      val = Math.pow( unitMap.get( toRaise.get(i) ), exp );
+      newMap.put( toRaise.get(i), (int)val );
+    }
+    
+    //Iterator<
+    System.out.println("NEW VAL: " + Math.pow(this.value, exp));
+    //return new(Math.pow(this.value,exp),  );
+    return null;//new Quantity( newVal, ;
   }
 
   // adds two Quantity's together
