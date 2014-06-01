@@ -30,7 +30,7 @@ public class QuantityTester extends junit.framework.TestCase {
     dist = new Quantity( VALUE, Arrays.asList("meter"), emp );
     vel = new Quantity( VALUE, Arrays.asList("meter"), Arrays.asList("s") );
     acc = new Quantity( VALUE, Arrays.asList("meter"), Arrays.asList("s", "s"));
-
+    
     quantityDB = QuantityDB.getDB(); // stores database
   }
 
@@ -43,9 +43,9 @@ public class QuantityTester extends junit.framework.TestCase {
   /** Tests One-Argument Copy Constructor */
   public void testOneArgConst()
   {
-    Quantity testQuant = new Quantity( defaultQuant );
-    assertTrue( testQuant.equals( defaultQuant ) );
-    assertEquals( "1.0", testQuant.toString() );
+    Quantity testQuant = new Quantity( acc );
+    assertTrue( testQuant.equals( acc ) );
+    assertEquals( VALUE + " meter s^-2", testQuant.toString() );
   }
 
   /** Tests Three Argument Constructor */
@@ -91,6 +91,7 @@ public class QuantityTester extends junit.framework.TestCase {
   public void testMul()
   {
     Quantity toMult = new Quantity( 1.0, Arrays.asList( "s" ), emp );
+
     assertTrue( dist.toString().equals( vel.mul(toMult).toString() ) );
     assertTrue( vel.toString().equals( acc.mul(toMult).toString() ) );
 
@@ -231,7 +232,7 @@ public class QuantityTester extends junit.framework.TestCase {
     assertEquals( VALUE + " meter", dist.toString() );
   }
 
-  /** Tests normalizedUnit method */
+  /** Tests normalizedUnit method XXX
   public void testNormalizedUnit()
   {
     assertEquals( "3600.0 second", 
@@ -242,7 +243,7 @@ public class QuantityTester extends junit.framework.TestCase {
                   Quantity.normalizedUnit("kph", quantityDB).toString() );
   }
 
-  /** Tests normalize method */
+  /** Tests normalize method XXX
   public void testNormalize()
   {
     Quantity testQuant = new Quantity( 100.0, Arrays.asList("yard"), emp );
@@ -253,12 +254,18 @@ public class QuantityTester extends junit.framework.TestCase {
     assertEquals( "1000.0 meter",
                   testQuant.normalize( quantityDB ).toString() );
                    
-  }
+  } */
 
   /** Tests pow method */
   public void testPow()
   {
-    int exp = 2;
+    int exp = 0;
+    assertEquals("1.0", dist.pow( exp ).toString() );
+
+    exp = 1;
+    assertEquals( VALUE + " meter", dist.pow( exp ).toString() );
+
+    exp = 2;
     assertEquals( (VALUE*VALUE) + " meter^2", dist.pow( exp ).toString() );
 
     // testing that original Quantity is not changed
@@ -274,15 +281,63 @@ public class QuantityTester extends junit.framework.TestCase {
     Quantity accClone = new Quantity( acc );
     assertTrue( acc.equals( accClone ) );
 
+    /*
+    for( int i = 0; i < Math.pow(
+    
+    Iterator<String> iter = unitMap.keySet().iterator();
+    ArrayList<String> toRaise = new ArrayList<String>();
+    Map<String, Integer> newMap = new HashMap<String, Integer>();
+    String key;
+    double val;
+    while( iter.hasNext() )
+    {
+      key = iter.next();
+      toRaise.add(key);
+    }
+    for( int i = 0; i < toRaise.size(); i++ )
+    {
+      val = Math.pow( unitMap.get( toRaise.get(i) ), exp );
+      newMap.put( toRaise.get(i), (int)val );
+    }
+    
+    //Iterator<
+    System.out.println("NEW VAL: " + Math.pow(this.value, exp));
+    //return new(Math.pow(this.value,exp),  );
+    return null;//new Quantity( newVal, ; */
+
     assertFalse( new Integer( 100 ).equals( dist ) );
   }
 
-  /** Tests hashCode method */
+  /** Tests hashCode method XXX
   public void testHashCode()
   {
+    /*
+    for( int i = 0; i < Math.pow(
+    
+    Iterator<String> iter = unitMap.keySet().iterator();
+    ArrayList<String> toRaise = new ArrayList<String>();
+    Map<String, Integer> newMap = new HashMap<String, Integer>();
+    String key;
+    double val;
+    while( iter.hasNext() )
+    {
+      key = iter.next();
+      toRaise.add(key);
+    }
+    for( int i = 0; i < toRaise.size(); i++ )
+    {
+      val = Math.pow( unitMap.get( toRaise.get(i) ), exp );
+      newMap.put( toRaise.get(i), (int)val );
+    }
+    
+    //Iterator
+    System.out.println("NEW VAL: " + Math.pow(this.value, exp));
+    //return new(Math.pow(this.value,exp),  );
+    return null;//new Quantity( newVal, ; 
+
     Quantity velClone = new Quantity( vel );
     assertEquals( vel.toString().hashCode(), velClone.toString().hashCode() );
     assertFalse( acc.toString().hashCode() == vel.toString().hashCode() );
-  }
-
+  } 
+  */ // TODO: delete this line later
 }

@@ -167,49 +167,58 @@ public class Quantity {
     double newVal = Math.pow( this.value, exp );
     
     Iterator<String> iter = unitMap.keySet().iterator();
-    ArrayList<String> toRaise = new ArrayList<String>();
-    Map<String, Integer> newMap = new HashMap<String, Integer>();
+
+    Quantity toReturn = new Quantity();
+
+    toReturn.value = Math.pow( this.value, exp );
+
     String key;
-    double val;
+
     while( iter.hasNext() )
     {
       key = iter.next();
-      toRaise.add(key);
+      if( (double)exp * unitMap.get(key) != 0 )
+      {
+        toReturn.unitMap.put( key, (int)(exp * unitMap.get(key)));
+      }
     }
-    for( int i = 0; i < toRaise.size(); i++ )
-    {
-      val = Math.pow( unitMap.get( toRaise.get(i) ), exp );
-      newMap.put( toRaise.get(i), (int)val );
-    }
-    
-    //Iterator<
-    System.out.println("NEW VAL: " + Math.pow(this.value, exp));
-    //return new(Math.pow(this.value,exp),  );
-    return null;//new Quantity( newVal, ;
+    return toReturn;
   }
 
   // adds two Quantity's together
   public Quantity add( Quantity toAdd ) throws IllegalArgumentException
   {
-    //should throw IllegalArgument if units are not the same
-    return null;
+    if( toAdd == null || !(toAdd.unitMap.equals(this.unitMap)) )
+    {
+      throw new IllegalArgumentException();
+    }
+    Quantity toReturn = new Quantity();
+    toReturn.value = this.value + toAdd.value;
+    toReturn.unitMap = this.unitMap;
+    return toReturn;
   }
 
   // subtracts the argument from this quantity ( neither should change )
   public Quantity sub( Quantity toSub ) throws IllegalArgumentException
   {
     // should also throw IllegaArgumentException if units are not the same
-    if( toSub == null )
+    if( toSub == null || !toSub.unitMap.equals(this.unitMap) )
     {
       throw new IllegalArgumentException();
     }
-    return null;
+    Quantity toReturn = new Quantity();
+    toReturn.value = this.value - toSub.value;
+    toReturn.unitMap = this.unitMap;
+    return toReturn;
   }
 
   // returns negation of this Quantity
   public Quantity negate( )
   {
-    return null;
+    Quantity toReturn = new Quantity();
+    toReturn.value = -this.value;
+    toReturn.unitMap = this.unitMap;
+    return toReturn;
   }
 
   // MUST UPDATE WITH OUR VARIABLE NAMES
