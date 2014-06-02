@@ -61,23 +61,53 @@ class Unicalc
   {
     //  S -> def W L | L
 
-    return L();  // I don't think we should *always* do this...
+    AST l = L();
+
+    return l;
+    // TODO
   }
 
   public AST L()
   {
     // L -> # E | E
 
-    return E();  // I don't think we should *always* do this...
+    AST e = E();
+
+    String next = toks.peek();
+    if(next == null)
+    {
+      return e;
+    }
+    else if(next.equals("#"));
+    {
+      return new Normalize(e);
+    }
   }
 
   public AST E() 
   {
-   //   E -> P + E | P - E | P
+    //   E -> P + E | P - E | P
 
-   AST p = P();
-   
-   return p;  // I don't think we should *always* do this...
+    AST p = P();
+    String next = toks.peek();
+    if(next == null)
+    {
+      return p;
+    }
+    else if (next.equals("+"))
+    {
+      toks.pop();
+      return new Sum(p, E());
+    }
+    else if (next.equals("-"))
+    {
+      toks.pop();
+      return new Difference(p, E());
+    }
+    else
+    {
+      return p;
+    }
   }
   
   public AST P()
@@ -85,15 +115,47 @@ class Unicalc
     //   P -> K * P | K / P | K
     
     AST k = K();
-    
-    return k;  // I don't think we should *always* do this
+   
+    String next = toks.peek();
+    if(next == null) 
+    {
+      return k;
+    }
+    else if(next.equals("*"))
+    {
+      toks.pop();
+      return new Product(k, P());
+    }
+    else if(next.equals("/"))
+    {
+      toks.pop();
+      return new Quotient(k, P());
+    }
+    else
+    {
+      return k;
+    }
   }
     
   public AST K()
   {
     // K -> - K | Q 
-    
-    return Q();  // I don't think we should *always* do this
+   
+    AST q = Q();
+    String next = toks.peek();
+    if(next == null)
+    {
+      return q;
+    } 
+    else if(next.equals("-"))
+    {
+      toks.pop();
+      return new Negation(q);
+    }
+    else
+    {
+      return q;
+    }
   }
 
   // private method isNumber
@@ -143,8 +205,20 @@ class Unicalc
     // R -> V | V ^ J
     
     AST v = V();
-
-    return v;  // I don't think I should *always* do this
+    String next = toks.peek();
+    if(next == null)
+    {
+      return v;
+    } 
+    else if(next.equals("^"))
+    {
+      toks.pop();
+      return new Power(v, J());
+    }
+    else
+    {
+      return v;
+    }
   }
 
   //  --------------------------------------------------
