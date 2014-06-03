@@ -63,8 +63,21 @@ class Unicalc
 
     AST l = L();
 
-    return l;
-    // TODO
+    String next = toks.peek();
+    if(next == null)
+    {
+      return l;
+    }
+    else if(next.equals("def"))
+    {
+      toks.pop();
+      String unit = (String)toks.peek();
+      return new Define(unit, l);
+    }
+    else
+    {
+      return l;
+    }
   }
 
   public AST L()
@@ -78,9 +91,14 @@ class Unicalc
     {
       return e;
     }
-    else if(next.equals("#"));
+    else if(next.equals("#"))
     {
+      toks.pop();
       return new Normalize(e);
+    }
+    else
+    {
+      return e;
     }
   }
 
@@ -142,6 +160,7 @@ class Unicalc
     // K -> - K | Q 
    
     AST q = Q();
+
     String next = toks.peek();
     if(next == null)
     {
@@ -150,7 +169,7 @@ class Unicalc
     else if(next.equals("-"))
     {
       toks.pop();
-      return new Negation(q);
+      return new Negation(K());
     }
     else
     {
@@ -192,12 +211,12 @@ class Unicalc
     
     AST r = R();
 
-    return r;  // I don't think I should *always* do this
+    return r;
+               // I don't think I should *always* do this
                //   (e.g., if I peek and the R is followed
                //    by a number, word, or left parenthesis,
                //    I should try to recurively grab at least
                //    one more R via Q...)
-
   }
 
   public AST R()
