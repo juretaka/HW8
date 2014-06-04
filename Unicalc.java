@@ -90,7 +90,7 @@ class Unicalc
       }
       else
       {
-        throw new ParseError("Error: expected word but found " + unit);
+        throw new ParseError("Error: expected unit but found " + unit);
       }
     }
     else
