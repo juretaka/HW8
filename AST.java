@@ -45,7 +45,7 @@ class Product implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely
+    return left.eval(env).mul( right.eval(env) ); // Seems unlikely
   }  
   
   public String toString()
@@ -75,8 +75,8 @@ class Quotient implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely
-  }  
+    return left.eval(env).div( right.eval(env) ); // Seems unlikely
+  }
   
   public String toString()
   {
@@ -105,7 +105,7 @@ class Power implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely 
+    return child.eval(env).pow( exponent );//Seems unlikely 
   }
   
   public String toString()
@@ -135,7 +135,7 @@ class Sum implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely
+    return left.eval(env).add( right.eval(env) ); // Seems unlikely
   }  
   
   public String toString()
@@ -165,7 +165,7 @@ class Difference implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely 
+    return left.eval(env).sub( right.eval(env) ); // Seems unlikely 
   }  
 
   public String toString()
@@ -195,7 +195,7 @@ class Negation implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely
+    return child.eval(env).negate(); // Seems unlikely
   }
   
   public String toString()
@@ -222,7 +222,7 @@ class Value implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely
+    return quant; // nothing to eval: the leaf of the tree
   }  
   
   public String toString()
@@ -250,7 +250,7 @@ class Normalize implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely
+    return child.eval(env).normalize( env ); // Seems unlikely
   }
   
   public String toString()
@@ -281,7 +281,8 @@ class Define implements AST
   
   public Quantity eval(Map<String,Quantity> env)
   {
-    return null; // Seems unlikely
+    env.put( unitName, defn.eval(env) );
+    return defn.eval(env); // Seems unlikely
   }
   
   public String toString()
