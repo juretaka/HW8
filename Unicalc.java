@@ -71,8 +71,16 @@ class Unicalc
     else if(next.equals("def"))
     {
       toks.pop();
-      String unit = (String)toks.peek();
-      return new Define(unit, l);
+      String unit = toks.peek();
+      if(isAlphabetic(unit))
+      {
+        toks.pop();
+        return new Define(unit, l);
+      }
+      else
+      {
+        throw new ParseError("Error: expected word but found " + unit);
+      }
     }
     else
     {
@@ -87,19 +95,27 @@ class Unicalc
     AST e = E();
 
     String next = toks.peek();
-    if(next == null)
+    /*if(next == null)
     {
       return e;
     }
     else if(next.equals("#"))
     {
+      //System.out.println("L-POP: " + toks.pop());
       toks.pop();
       return new Normalize(e);
     }
     else
     {
       return e;
+    }*/
+    if("#".equals(next))
+    {
+      toks.pop();
+      return new Normalize(E());
     }
+    else
+      return E();
   }
 
   public AST E() 
@@ -108,22 +124,27 @@ class Unicalc
 
     AST p = P();
     String next = toks.peek();
+    System.out.println("E-NEXT: " + next);
     if(next == null)
     {
+      //System.out.println("E-NULL!!!!!!!!!!!!!!!!!!");
       return p;
     }
-    else if (next.equals("+"))
+    else if(next.equals("+"))
     {
       toks.pop();
+      //System.out.println("E-SUM!!!!!!!!!!!!!!!!!!!!!");
       return new Sum(p, E());
     }
-    else if (next.equals("-"))
+    else if(next.equals("-"))
     {
       toks.pop();
+      //System.out.println("E-DIFFERENCE!!!!!!!!!!!!!!!!!!!!");
       return new Difference(p, E());
     }
     else
     {
+      //System.out.println("E-DEFAULT!!!!!!!!!!!!!!!!!!!!");
       return p;
     }
   }
@@ -211,7 +232,22 @@ class Unicalc
     
     AST r = R();
 
-    return r;
+    String next = toks.peek();
+    if(next == null)
+    {
+      return r;
+    }
+    else if(next.equals("(") || next.equals(")") || 
+            isAlphabetic(next) || isNumber(next))
+    {
+      return new Product(r, Q());
+    }
+    else
+    {
+      return r;
+    }
+
+    //return r;
                // I don't think I should *always* do this
                //   (e.g., if I peek and the R is followed
                //    by a number, word, or left parenthesis,
