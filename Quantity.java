@@ -224,7 +224,6 @@ public class Quantity {
   // MUST UPDATE WITH OUR VARIABLE NAMES
   public String toString()
   {
-    // XXX You will need to fix these lines to match your fields!
     double valueOfTheQuantity = this.value;
     Map<String,Integer> mapOfTheQuantity = this.unitMap;
 
@@ -280,14 +279,39 @@ public class Quantity {
   // returns a brand-new normalized Quantity equal to one of the given unit
   public static Quantity normalizedUnit(String unit, Map<String, Quantity> data)
   {
-    return null;
+    Quantity toReturn;
+    if( data.containsKey( unit ) )
+    {
+      toReturn = data.get( unit );
+      return toReturn.normalize( data );
+    }
+    else
+    {
+      return new Quantity( 1.0 , Arrays.asList( unit ), 
+        Collections.<String>emptyList() );
+    }
   }
-
 
   // returns a copy of this in normalized form
   public Quantity normalize( Map<String, Quantity> data )
   {
-    return null;
+    Quantity toReturn = new Quantity();
+    toReturn.value = this.value;
+    Iterator<String> iter = unitMap.keySet().iterator();
+    String key;
+    int exp;
+    Quantity toConvert;
+    Quantity totalConvert;
+    while( iter.hasNext() )
+    {
+      key = iter.next();
+      exp = unitMap.get( key );
+
+      toConvert = normalizedUnit( key, data ).pow( exp );
+
+      toReturn = toReturn.mul( toConvert );
+    }
+    return toReturn;
   }
 
 }
