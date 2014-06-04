@@ -17,13 +17,19 @@ public class Quantity {
   // stores the attached units
   private Map<String, Integer> unitMap;
 
-
+  /** 
+   * Default constructor that sets value to 1.0 
+   */
   public Quantity()
   {
     unitMap = new HashMap<String, Integer>();
     value = 1.0;
   }
 
+  /**
+   * Copy constructor
+   * @param orig the original Quantity object
+   */
   public Quantity( Quantity orig )
   {
     if(orig == null)
@@ -32,6 +38,13 @@ public class Quantity {
     unitMap = orig.unitMap;
   }
 
+  /**
+   * Creates a new Quantity object with an indicated value and units for
+   * the numerator and denominator
+   * @param value the value of the Quantity object
+   * @param numUnits the units for the numerator
+   * @param denomUnits the units for the denominator
+   */
   public Quantity(double value, List<String> numUnits, List<String> denomUnits)
     throws IllegalArgumentException
   {
@@ -94,7 +107,10 @@ public class Quantity {
     }
   }
 
-  // multiplies two Quantity's together
+  /**
+   * Multiplies two quantities together
+   * @param multip multiplies the original by this quantity
+   */
   public Quantity mul( Quantity multip ) throws IllegalArgumentException
   {
     if( multip == null )
@@ -117,6 +133,13 @@ public class Quantity {
     return new Quantity( newVal, numUnits, denomUnits );
   }
 
+  /**
+   * Helper method for the mul and div methods
+   * @param iter the keySet iteration of the unitMap
+   * @param num the units for the numerator
+   * @param denom the units for the denominator
+   * @param quant the Quantity object to be manipulated
+   */
   private void mulDivHelper( Iterator<String> iter, List<String> num, 
       List<String> denom, Quantity quant )
   {
@@ -138,7 +161,11 @@ public class Quantity {
       }
     }
   }
-  // this is the dividend
+  
+  /**
+   * Divides two quantities
+   * @param divis divides the original by this quantity
+   */
   public Quantity div( Quantity divis ) throws IllegalArgumentException
   {
     if( divis == null || divis.value == 0)
@@ -161,7 +188,10 @@ public class Quantity {
     return new Quantity( newVal, numUnits, denomUnits );
   }
 
-  // returns this to the power of the passed in exponenet
+  /**
+   * Raises a Quantity to the power of the indicated exponent
+   * @param exp the exponent
+   */
   public Quantity pow( int exp )
   {
     double newVal = Math.pow( this.value, exp );
@@ -185,7 +215,10 @@ public class Quantity {
     return toReturn;
   }
 
-  // adds two Quantity's together
+  /**
+   * Adds two quantities together
+   * @param toAdd the original is added by this quantity
+   */
   public Quantity add( Quantity toAdd ) throws IllegalArgumentException
   {
     if( toAdd == null || !(toAdd.unitMap.equals(this.unitMap)) )
@@ -198,7 +231,10 @@ public class Quantity {
     return toReturn;
   }
 
-  // subtracts the argument from this quantity ( neither should change )
+  /**
+   * Subtracts two quantities
+   * @param toSub the original is subtracted by this quantity
+   */
   public Quantity sub( Quantity toSub ) throws IllegalArgumentException
   {
     // should also throw IllegaArgumentException if units are not the same
@@ -212,7 +248,9 @@ public class Quantity {
     return toReturn;
   }
 
-  // returns negation of this Quantity
+  /**
+   * Returns the negation of a quantity
+   */
   public Quantity negate( )
   {
     Quantity toReturn = new Quantity();

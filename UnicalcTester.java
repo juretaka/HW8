@@ -150,7 +150,7 @@ public class UnicalcTester extends junit.framework.TestCase
   /** Tests the R grammar rule with parentheses */
   public void testR2()
   {
-    unicalc.tokenize("(2)^4);
+    unicalc.tokenize("(2)^4");
     ast = unicalc.R();
 
     assertEquals("Testing R", "Power(Value(2.0),4)", ast.toString());
