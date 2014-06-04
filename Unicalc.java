@@ -133,7 +133,6 @@ class Unicalc
 
     AST p = P();
     String next = toks.peek();
-    System.out.println("E-NEXT: " + next);
     if(next == null)
     {
       return p;
