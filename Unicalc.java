@@ -251,8 +251,7 @@ class Unicalc
     {
       return r;
     }
-    else if(next.equals("(") || next.equals(")") || 
-            isAlphabetic(next) || isNumber(next))
+    if(isAlphabetic(next) || isNumber(next) || next.equals("("))
     {
       return new Product(r, Q());
     }
@@ -260,13 +259,6 @@ class Unicalc
     {
       return r;
     }
-
-    //return r;
-               // I don't think I should *always* do this
-               //   (e.g., if I peek and the R is followed
-               //    by a number, word, or left parenthesis,
-               //    I should try to recurively grab at least
-               //    one more R via Q...)
   }
 
   /**
