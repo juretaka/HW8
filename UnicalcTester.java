@@ -49,12 +49,14 @@ public class UnicalcTester extends junit.framework.TestCase
   /** Tests the L grammar rule */
   public void testL()
   {
+    System.out.println("----------------------");
     unicalc.tokenize("# 60Hz * 30s");
     ast = unicalc.L();
 
     assertEquals("Testing L", 
       "Normalize(Product(Product(Value(60.0),Value(1.0 Hz)),Product(Value(30.0),Value(1.0 s))))", 
        ast.toString());
+    System.out.println("----------------------");
   }
 
   /** Tests the L grammar rule */
@@ -126,6 +128,16 @@ public class UnicalcTester extends junit.framework.TestCase
                  ast.toString());
   }
 
+  /** Tests the Q grammar rule with parentheses */
+  public void testQ2()
+  {
+    unicalc.tokenize("(3)(m)");
+    ast = unicalc.Q();
+
+    assertEquals("Testing Q", "Product(Value(3.0),Value(1.0 m))",
+                 ast.toString());
+  }
+
   /** Tests the R grammar rule */
   public void testR()
   {
@@ -134,5 +146,15 @@ public class UnicalcTester extends junit.framework.TestCase
 
     assertEquals("Testing R", "Power(Value(2.0),4)", ast.toString());
   }
+
+  /** Tests the R grammar rule with parentheses */
+  public void testR2()
+  {
+    unicalc.tokenize("(2)^4);
+    ast = unicalc.R();
+
+    assertEquals("Testing R", "Power(Value(2.0),4)", ast.toString());
+  }
 }
+
 

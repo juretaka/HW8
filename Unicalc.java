@@ -1,10 +1,18 @@
+/*
+ * CSE 12 Homework 8
+ * Joshua Chang and Kirk Srijongsirikul
+ * A11666538 and A11687702
+ * A00 (both partners)
+ * 5-27-14
+ */
+
 // Unicalc.java
 // Original Author: Chris Stone, Harvey Mudd College
 // TODO: Fill in and modify the functions below where the comments
 //   suggest changes are needed so that these functions correctly parse
 //   the Unicalc language
 
-// Extended by:
+// Extended by: Joshua Chang and Kirk Srijongsirikul
 
 import java.util.*;        // Scanner, LinkedList, ...
 import java.util.regex.*;  // Pattern, Matcher, ...
@@ -16,7 +24,8 @@ class Unicalc
                                     //    to keep track of the remaining tokens.
                                     // Initialized by tokenize(...)
                                     // Parsing functions remove the tokens
-  
+ 
+  /** Default constructor for unicalc */ 
   public Unicalc() 
   { 
      // Nothing we need to do in the constructor.
@@ -57,16 +66,18 @@ class Unicalc
     return answer;
   }
   
+  /** 
+   * Checks if the next token is 'def'
+   * @return AST the next grammar rule
+   */
   public AST S()
   {
     //  S -> def W L | L
 
-    AST l = L();
-
     String next = toks.peek();
     if(next == null)
     {
-      return l;
+      return L();
     }
     else if(next.equals("def"))
     {
@@ -75,7 +86,7 @@ class Unicalc
       if(isAlphabetic(unit))
       {
         toks.pop();
-        return new Define(unit, l);
+        return new Define(unit, L());
       }
       else
       {
@@ -84,40 +95,38 @@ class Unicalc
     }
     else
     {
-      return l;
+      return L();
     }
   }
 
+  /**
+   * Checks if the next token is '#'
+   * @return AST the next grammar rule
+   */
   public AST L()
   {
     // L -> # E | E
 
-    AST e = E();
-
     String next = toks.peek();
-    /*if(next == null)
+    if(next == null)
     {
-      return e;
+      return E();
     }
     else if(next.equals("#"))
-    {
-      //System.out.println("L-POP: " + toks.pop());
-      toks.pop();
-      return new Normalize(e);
-    }
-    else
-    {
-      return e;
-    }*/
-    if("#".equals(next))
     {
       toks.pop();
       return new Normalize(E());
     }
     else
+    {
       return E();
+    }
   }
 
+  /**
+   * Checks if the next token is '+' or '-'
+   * @return AST the next grammar rule
+   */
   public AST E() 
   {
     //   E -> P + E | P - E | P
@@ -127,28 +136,28 @@ class Unicalc
     System.out.println("E-NEXT: " + next);
     if(next == null)
     {
-      //System.out.println("E-NULL!!!!!!!!!!!!!!!!!!");
       return p;
     }
     else if(next.equals("+"))
     {
       toks.pop();
-      //System.out.println("E-SUM!!!!!!!!!!!!!!!!!!!!!");
       return new Sum(p, E());
     }
     else if(next.equals("-"))
     {
       toks.pop();
-      //System.out.println("E-DIFFERENCE!!!!!!!!!!!!!!!!!!!!");
       return new Difference(p, E());
     }
     else
     {
-      //System.out.println("E-DEFAULT!!!!!!!!!!!!!!!!!!!!");
       return p;
     }
   }
-  
+ 
+  /**
+   * Checks if the next token is '*' or '/'
+   * @return AST the next grammar rule
+   */ 
   public AST P()
   {
     //   P -> K * P | K / P | K
@@ -176,17 +185,19 @@ class Unicalc
     }
   }
     
+  /**
+   * Checks if the next token is '-'
+   * @return AST the next grammar rule
+   */
   public AST K()
   {
     // K -> - K | Q 
    
-    AST q = Q();
-
     String next = toks.peek();
     if(next == null)
     {
-      return q;
-    } 
+      return Q();
+    }
     else if(next.equals("-"))
     {
       toks.pop();
@@ -194,7 +205,7 @@ class Unicalc
     }
     else
     {
-      return q;
+      return Q();
     }
   }
 
@@ -226,6 +237,10 @@ class Unicalc
     return s != null && s.matches("[a-zA-Z_]+");
   }
   
+  /**
+   * Checks if the next token is a unit, parenthesis, or number
+   * @return AST the next grammar rule
+   */
   public AST Q()
   {
     // Q -> R | R Q 
@@ -255,6 +270,10 @@ class Unicalc
                //    one more R via Q...)
   }
 
+  /**
+   * Checks if the next token is '^'
+   * @return AST the next grammar rule
+   */
   public AST R()
   {
     // R -> V | V ^ J
