@@ -32,13 +32,6 @@ public class ASTTester extends junit.framework.TestCase
     nineMeters = new Quantity(9, Arrays.asList("meter"), empty);
   }
 
-  public void testProductOld()
-  {
-    ast = new Product(new Value(new Quantity(3)), new Value(new Quantity(5)));
-
-    assertEquals("Testing Product", new Quantity(15), ast.eval(env));
-  }//*/
-
   /** Tests Product */
   public void testProduct()
   {
